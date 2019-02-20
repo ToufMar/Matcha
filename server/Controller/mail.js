@@ -1,8 +1,8 @@
 var mail = require('nodemailer');
 
-let mailOptionInscription = (link) => ({
+let mailOptionInscription = (link, email) => ({
     from: 'rotureau.martin@gmail.com',
-    to: 'rotureau.martin@gmail.com',
+    to: email,
     subject: 'Inscription to Matcha',
     html: "Welcome on Matcha<br/>Please click on this link to confirm your inscription :). <br/><a href="+link+">Click here</a>"
 });
@@ -16,8 +16,8 @@ let transporter = mail.createTransport({
 });
 
 let sendMail = {
-    inscription: (link) => {
-        transporter.sendMail(mailOptionInscription(link), (error, info) => {
+    inscription: (link, email) => {
+        transporter.sendMail(mailOptionInscription(link, email), (error, info) => {
             if (error) {
                 console.log(error)
             }

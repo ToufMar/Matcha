@@ -10,7 +10,6 @@ const authJWT = {
 
     verifyToken: (req, res, next) => {
         const token = req.get('token') || req.body.token || req.query.token;
-
         if (!token) return (res.json({error: true, message:"No token "}));
 
         jwt.verify(token, SECRET_KEY, (err, decodedData) => {
@@ -18,9 +17,6 @@ const authJWT = {
             next();
         })
     }
-
 }
-
-
 
 module.exports =  authJWT;
