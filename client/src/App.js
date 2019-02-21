@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import {Route, Switch} from 'react-router-dom';
+import Router from './Router/Router.jsx';
 class App extends Component {
   render() {
     return (
-      <Route></Route>
+        <Router/>
     );
   }
 }
 
 export default App;
-s
