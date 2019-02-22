@@ -8,6 +8,20 @@ import TextField from '@material-ui/core/TextField';
 class InscriptionButton extends Component {
     state = {
         open: false,
+        firstName: '',
+        lastName: '',
+        login: '',
+        email: '',
+        password: '',
+        isMissing: false,
+        disabled: true,
+        errorInputs: {
+            firstName: null,
+            lastName: null,
+            login: null,
+            email: false,
+            password: false,
+        },
     }
 
     handleClose = () => {
@@ -18,8 +32,35 @@ class InscriptionButton extends Component {
         this.setState({ open: true })
     }
 
+    verifInputs = (id, value) => {
+        if (id === 'lastName' || id === 'firstName' || id === 'login') {
+            if (value.length < 8) {
+                return true
+            } else return false
+        }
+    }
+    
+    handleInput = (e) => {
+        const { id, value } = e.target;
+        const { firstName, lastName, login, email, password } = this.state.errorInputs;
+        (firstName && lastName && login) ? console.log(firstName, lastName, login) : console.log(firstName, lastName, login);
+        this.setState({
+            disabled: (firstName && lastName && login) ? true : false,
+            [id]: value,
+            errorInputs: {...this.state.errorInputs, [id]: this.verifInputs(id, value)},
+        })
+    }
+
+    handleSubmit = () => {
+        const { firstName, lastName, login, email, password } = this.state;
+        if (!firstName || !lastName || !login || !email || !password) {
+
+        }
+    }
+
     render() {
-        const { open } = this.state;
+        const { open, errorInputs, disabled } = this.state;
+        console.log(disabled)
 
         return (
             <Fragment>
@@ -35,34 +76,49 @@ class InscriptionButton extends Component {
                         <DialogTitle id="alert-dialog-title">{"INSCRIPTION"}</DialogTitle>
                         <form style={{ display: 'flex', flexDirection: "column" }}>
                             <TextField
-                                id="LastName"
-                                placeholder="Nom"
+                                id="lastName"
+                                label='Nom'
                                 margin="normal"
                                 variant="outlined"
-                            />
+                                onChange={this.handleInput}
+                                error={errorInputs.lastName}
+                                />
                             <TextField
-                                id="FirstName"
-                                placeholder="Prenom"
+                                id="firstName"
+                                label='Prenom'
                                 margin="normal"
                                 variant="outlined"
-                            />
+                                onChange={this.handleInput}
+                                error={errorInputs.firstName}
+                                />
                             <TextField
-                                id="Login"
-                                placeholder="Login"
+                                id="login"
+                                label='Login'
                                 margin="normal"
                                 variant="outlined"
-                            /><TextField
+                                onChange={this.handleInput}
+                                error={errorInputs.login}
+                                /><TextField
                                 id="email"
-                                placeholder="Email"
+                                label='Email'
                                 margin="normal"
                                 variant="outlined"
-                            />
+                                onChange={this.handleInput}
+                                error={errorInputs.email}
+                                />
                             <TextField
-                                id="Password"
-                                placeholder="Password"
+                                id="password"
+                                label='Password'
                                 margin="normal"
                                 variant="outlined"
+                                onChange={this.handleInput}
+                                error={errorInputs.password}
                             />
+                            <Button onClick={this.handleSubmit}
+                            disabled={disabled}
+                            >
+                                Submit
+                            </Button>
                         </form>
                     </DialogContent>
                 </Dialog>

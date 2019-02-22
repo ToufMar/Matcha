@@ -18,7 +18,6 @@ class Inscription extends Component{
                 open={open}
                 onClose
             >
-                
             </Dialog>
         )
     }
