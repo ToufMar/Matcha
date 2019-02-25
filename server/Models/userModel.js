@@ -17,7 +17,6 @@ module.exports = userModel = {
     },
 
     IfExists:  (PostData, fn) => {
-        console.log(PostData)
         sql.query("SELECT * FROM `users` WHERE login=? OR email=?", [PostData.login, PostData.email], (error, results, fields) => {            
             // if (error) throw error;
             (results.length > 0) ? fn({bool: true, results: results}) : fn({bool: false, results: results});

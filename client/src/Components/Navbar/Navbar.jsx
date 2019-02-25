@@ -4,24 +4,33 @@ import Logout from './Logout.jsx';
 import Inscription from './Inscription.jsx'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import { UserContextWrapper } from '../Contexts/UserContext.jsx';
+import { UserContext } from '../Contexts/UserContext.jsx';
 
-const NavBar = (value) => {
-    console.log(value)
+const NavBar = () => {
+
+    const context = useContext(UserContext)
+    console.log(context)
     return (
+
         <AppBar position="sticky" style={{ backgroundColor: 'pink', width: '100%' }} elevation={0} top={0}>
             <Toolbar>
-                {/* {!connected && */}
-                <Fragment>
-                    <Connect test={'lol'}/>
-                    <Inscription />
-                </Fragment>
-                {/* } */}
-                {/* {connected && */}
-                <Logout />
-                {/* } */}
+                <input id='login' onChange={context.handleInput}></input>
+                <input id='lul' onChange={context.handleInput}></input>
+
+                {/* {!context.connected &&
+                    <Fragment>
+                        <Connect />
+                        <Inscription />
+                    </Fragment>
+                }
+                {context.connected &&
+                    <div style={{ display: 'flex' }}>
+                        <p>{context.userInfo.login}</p>
+                        <Logout />
+                    </div>
+                } */}
             </Toolbar>
         </AppBar>)
 }
 
-export default UserContextWrapper(NavBar);
+export default NavBar;

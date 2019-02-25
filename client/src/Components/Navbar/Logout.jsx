@@ -1,23 +1,15 @@
-import React, { Component, Fragment } from 'react';
-import { RouterContext, RouterConsumer } from '../../Router/RouterContext.jsx';
+import React, { Component, Fragment, useContext } from 'react';
+import { UserContext } from '../Contexts/UserContext.jsx';
 import Button from '@material-ui/core/Button';
 
-class Logout extends Component {
-
-    render() {
-        return (
-            // <RouterConsumer>
-                // {() => (
-                    <Button onClick={this.context.handleConnect} color='secondary' variant="contained">
-                        Logout
-                    </Button>
-                // )
-                // }
-            // </RouterConsumer>
-        );
-    }
+const Logout = () => {
+    
+    const context = useContext(UserContext);
+    return (
+        <Button onClick={context.handleLogout} color='secondary' variant="contained">
+            Logout
+        </Button>
+    );
 }
 
-
-// Logout.contextType = RouterContext;
 export default Logout;

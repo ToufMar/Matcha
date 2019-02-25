@@ -79,7 +79,7 @@ const User = {
                 } else {
                     bcrypt.hash(PostData.password, 10, (err, hashed) => {
                         let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-                        let link =  'http://localhost:3000/verifyMail?login=' + PostData.login + '&token=' + token;
+                        let link = 'http://localhost:3000/verifyMail?login=' + PostData.login + '&token=' + token;
                         mail.inscription(link, PostData.email)
                         PostData.emailToken = token;
                         PostData.password = hashed;
@@ -104,36 +104,41 @@ const User = {
 
         console.log(req.body)
         userModel.IfExists(postData, (results) => {
+            console.log(results)
             if (!results.bool) {
+                console.log('tanere')
                 res.send({
                     "status": 400,
                     "error": true,
                     "response": 'Mail or Login invalid'
                 })
+                return ;
             } else if (results.results[0].validEmail === 0) {
                 res.send(JSON.stringify({
                     "status": 401,
                     "error": true,
                     "response": "Email non verifie"
                 }))
+            } else {
+                console.log('-----------------------------------')
+                bcrypt.compare(postData.password, results.results[0].password).then((result) => {
+                    if (result) {
+                        const token = JWT.signToken(postData);
+                        res.end(JSON.stringify({
+                            "status": 200,
+                            "error": null,
+                            "response": "User connecté",
+                            "token": token,
+                        }))
+                    } else {
+                        res.end(JSON.stringify({
+                            "status": 401,
+                            "error": true,
+                            "response": "Password Invalid"
+                        }))
+                    }
+                }).catch((err) => err)
             }
-            bcrypt.compare(postData.password, results.results[0].password).then((result) => {
-                if (result) {
-                    const token = JWT.signToken(postData);
-                    res.end(JSON.stringify({
-                        "status": 200,
-                        "error": null,
-                        "response": "User connecté",
-                        "token": token,
-                    }))
-                } else {
-                    res.end(JSON.stringify({
-                        "status": 401,
-                        "error": true,
-                        "response": "Password Invalid"
-                    }))
-                }
-            }).catch((err) => err)
         })
     },
 
