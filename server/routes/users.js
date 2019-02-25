@@ -5,12 +5,12 @@ var JWT = require('../Auth/serverAuth');
 
 router.get('/', User.getAll);
 router.get('/name/:name', User.getUser);
-router.get('/verifyMail', User.verifyMail);
+router.get('/verifyEmail', User.verifyMail);
 router.post('/inscription', User.inscription);
 router.delete('/', User.deleteUser);
 router.post('/connect', User.connect);
 
-router.use(JWT.verifyToken);
+// router.use(JWT.verifyToken);
 
 
 module.exports = router;

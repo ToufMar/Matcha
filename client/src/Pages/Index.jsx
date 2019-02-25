@@ -1,9 +1,76 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 
 class Index extends Component{
     render(){
         return(
-            <>LOL</>
+                <div>
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                LOL
+                </div>
         )
     }
 }

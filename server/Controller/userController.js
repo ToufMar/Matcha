@@ -22,22 +22,22 @@ let passwordVerification = (password) => {
 let datasVerification = (PostData) => {
     if (!PostData.lastName || !PostData.firstName || !PostData.login || !PostData.email || !PostData.password) {
         return {
-            "status": 500,
+            "status": 400,
             "response": 'Infos are missing'
         }
     } else if (!emailVerification(PostData.email)) {
         return {
-            status: 500,
+            status: 400,
             response: 'mail not valid'
         }
     } else if (!loginVerication(PostData.login)) {
         return {
-            status: 500,
+            status: 400,
             response: 'login not valid'
         }
     } else if (!passwordVerification(PostData.password)) {
         return {
-            status: 500,
+            status: 400,
             response: 'password not valid'
         }
     } else {
@@ -71,22 +71,26 @@ const User = {
         } else {
             userModel.IfExists(PostData, (results) => {
                 if (results.bool === true) {
-                    res.status(500).send({
-                        "status": 500,
+                    res.send({
+                        "status": 400,
                         "exists": true,
                         "response": 'user already exists'
                     });
                 } else {
                     bcrypt.hash(PostData.password, 10, (err, hashed) => {
                         let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-                        let link = req.protocol + '://' + req.get('host') + '/api/users/verifyMail?login=' + PostData.login + '&token=' + token;
+                        let link =  'http://localhost:3000/verifyMail?login=' + PostData.login + '&token=' + token;
                         mail.inscription(link, PostData.email)
                         PostData.emailToken = token;
                         PostData.password = hashed;
                         userModel.inscriptionInsertUser(PostData, (results) => {
                             if (results) {
-                                const token = JWT.signToken(PostData);
-                                res.send({ token: token });
+                                // const token = JWT.signToken(PostData);
+                                res.send({
+                                    "status": 200,
+                                    "response": 'Vous allez recevoir un mail de confirmation.',
+                                    // token: token
+                                });
                             }
                         })
                     })
@@ -97,56 +101,61 @@ const User = {
 
     connect: (req, res, next) => {
         let postData = req.body;
+
+        console.log(req.body)
         userModel.IfExists(postData, (results) => {
             if (!results.bool) {
                 res.send({
-                    "status": 500,
+                    "status": 400,
                     "error": true,
                     "response": 'Mail or Login invalid'
                 })
-            } else if (results.results[0].validEmail === 0){
-                    res.send(JSON.stringify({
+            } else if (results.results[0].validEmail === 0) {
+                res.send(JSON.stringify({
+                    "status": 401,
+                    "error": true,
+                    "response": "Email non verifie"
+                }))
+            }
+            bcrypt.compare(postData.password, results.results[0].password).then((result) => {
+                if (result) {
+                    const token = JWT.signToken(postData);
+                    res.end(JSON.stringify({
+                        "status": 200,
+                        "error": null,
+                        "response": "User connecté",
+                        "token": token,
+                    }))
+                } else {
+                    res.end(JSON.stringify({
                         "status": 401,
                         "error": true,
-                        "response": "Email non verifie"
+                        "response": "Password Invalid"
                     }))
                 }
-                bcrypt.compare(postData.password, results.results[0].password).then((result) => {
-                    if (result) {
-                        const token = JWT.signToken(postData);
-                        res.end(JSON.stringify({
-                            "status": 200,
-                            "error": null,
-                            "response": "User connecté",
-                            "token": token,
-                        }))
-                    } else {
-                        res.end(JSON.stringify({
-                            "status": 401,
-                            "error": true,
-                            "response": "Password Invalid"
-                        }))
-                    }
-                }).catch((err) => console.log(err))
+            }).catch((err) => err)
         })
     },
 
     verifyMail: (req, res, next) => {
         userModel.getMailInfos(req.query.login, (results) => {
-            if (results[0].validEmail === 1){
+            if (results[0].validEmail === 1) {
                 res.send(JSON.stringify({
                     "status": 200,
                     "response": "Vous avez deja confirmé votre mail"
                 }))
-            }else if (results[0].emailToken !== req.query.token) {
+            } else if (results[0].emailToken !== req.query.token) {
                 res.send(JSON.stringify({
-                    "status": 500,
+                    "status": 400,
                     "response": "L'url transmis ne correspond a rien. Deso Wola"
                 }))
-            
+
             } else {
                 userModel.setValidToTrue(req.query.token, (results) => {
-                    res.send({results, user: 'confirmed'});
+                    res.send({
+                        results,
+                        user: 'confirmed'
+                    });
                 })
             }
         })

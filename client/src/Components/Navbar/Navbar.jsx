@@ -1,39 +1,27 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, useContext } from 'react';
 import Connect from './Connect.jsx';
 import Logout from './Logout.jsx';
 import Inscription from './Inscription.jsx'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-class NavBar extends Component {
+import { UserContextWrapper } from '../Contexts/UserContext.jsx';
 
-    render() {
-        const { connected } = this.props.datas;
-        return (
-            <AppBar style={{ backgroundColor: 'pink' }}>
-                <Toolbar>
-                    {!connected &&
-                        <Fragment>
-                            <Connect />
-                            <Inscription/>
-                        </Fragment>
-                    }
-                    {connected &&
-                        <Logout />}
-                </Toolbar>
-            </AppBar>
-        )
-
-
-        // if (!connected) {
-        //     return (
-        //         <Connect></Connect>
-        //     )
-        // } else {
-        //     return (
-        //         <Logout></Logout>
-        //     )
-        // }
-    }
+const NavBar = (value) => {
+    console.log(value)
+    return (
+        <AppBar position="sticky" style={{ backgroundColor: 'pink', width: '100%' }} elevation={0} top={0}>
+            <Toolbar>
+                {/* {!connected && */}
+                <Fragment>
+                    <Connect test={'lol'}/>
+                    <Inscription />
+                </Fragment>
+                {/* } */}
+                {/* {connected && */}
+                <Logout />
+                {/* } */}
+            </Toolbar>
+        </AppBar>)
 }
 
-export default NavBar;
+export default UserContextWrapper(NavBar);

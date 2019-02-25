@@ -7,7 +7,7 @@ var connection = mysql.createConnection({
     user     : 'root',
     password : 'rootroot',
     database : 'matcha',
-    port: '3306'
+    port     : '3307'
 });
 
 connection.connect(function(err) {

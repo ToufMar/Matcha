@@ -1,37 +1,26 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
-import { RouterProvider } from './RouterContext.jsx';
+import {UserProvider} from '../Components/Contexts/UserContext.jsx';
 import Navbar from '../Components/Navbar/Navbar.jsx';
 import Index from '../Pages/Index.jsx';
+import Verify from '../Pages/Verify.jsx'
+
 class Router extends Component {
-    
-    handleConnect = () => {
-        this.setState({
-            connected: (this.state.connected) ? false : true
-        })
-    }
-
-    state = {
-        connected: false,
-        handleConnect: this.handleConnect
-    }
-
     render() {
-        console.log(this.state)
         return (
-            <RouterProvider value={this.state}>
-                <Navbar datas={this.state}></Navbar>
+            <UserProvider>
+                <Navbar datas={'lol'}/>
                 <Switch>
-
-                {this.state.connected && 
-                    <Route exact path='/' component={Index}></Route>
-                }
+                    <Route exact path='/' component={Index} />
+                    <Route path='/verifyEmail' render={Verify} />
+                    {/* { */}
+                    {/* this.state.connected && */}
+                    <div>TA RACE LA CHIENNE</div>
+                    {/* } */}
                 </Switch>
-            </RouterProvider>
+            </UserProvider>
         )
     }
 }
-
-
 
 export default Router;

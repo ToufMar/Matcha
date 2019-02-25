@@ -6,18 +6,18 @@ class Logout extends Component {
 
     render() {
         return (
-            <RouterConsumer>
-                {() => (
+            // <RouterConsumer>
+                // {() => (
                     <Button onClick={this.context.handleConnect} color='secondary' variant="contained">
                         Logout
                     </Button>
-                )
-                }
-            </RouterConsumer>
+                // )
+                // }
+            // </RouterConsumer>
         );
     }
 }
 
 
-Logout.contextType = RouterContext;
+// Logout.contextType = RouterContext;
 export default Logout;
