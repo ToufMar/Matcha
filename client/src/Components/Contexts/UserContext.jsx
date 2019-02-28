@@ -103,24 +103,54 @@ const UserContext = createContext({ connected: false });
 
 const initialState = {
     connected: false,
-    // input: ''
-    userInfo: {
-        // login: ''
+    valid: false,
+    userInfo: {},
+    error: {
+        isError: null,
+        connection: '',
+        snackBar: false,
     }
 }
 
 const reducer = (state, action) => {
-    // console.log(action)
-    // console.log([action])
     switch (action.type) {
-        case 'setLogin': {
-            // const userInfo = { action }
+        case 'setInput': {
             delete action.type;
+            const { target } = action;
             return {
                 ...state,
+                userInfo: { ...state.userInfo, [target.id]: target.value }
+            }
+        }
+        case 'connectUser': {
+            delete state.userInfo.password
+            localStorage['user'] = action.res.token;
+            return {
+                ...state,
+                connected: true,
+                error: {...state.error, isError: false, message: ''},
+                userInfo: { ...state.userInfo, token: action.res.token }
+            }
+        }
+        case 'errorConnection': {
+            console.log(action.res.response)
+            return {
+                ...state,
+                error: {...state.error, isError: true, message: action.res.response, snackBar: true}
                 
-                // action.key
-                // [action.id]: action.value
+            }
+        }
+        case 'closeSnack': {
+            return {
+                ...state,
+                error: {...state.error, snackBar: false}
+            }
+        }
+        case 'logout': {
+            return {
+                ...state,
+                connected: false,
+                userInfo: {}
             }
         }
         default:
@@ -132,16 +162,32 @@ const UserProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const handleInput = (e) => {
-
-        const { id, value } = e.target;
+        const { target } = e;
         dispatch({
-            type: 'setLogin', [id]: value
+            type: 'setInput', target: target
         })
     }
+
+    const connectUser = (e, userInfo) => {
+        e.preventDefault();
+        let headers = {
+            'Content-Type': 'application/json',
+        }
+        axios.post('http://localhost:8000/api/users/connect', userInfo, headers)
+        .then((res) => {
+            (res.data.status === 200) ? dispatch({type: 'connectUser', res: res.data}) : dispatch({type: 'errorConnection', res: res.data})
+        })
+        .catch((err) => dispatch({type: 'errorConnection'}))
+    }
+
     return (
         <UserContext.Provider value={{
             state,
-            handleInput: handleInput
+            dispatch,
+            methods: {
+                handleInput: handleInput,
+                connectUser: connectUser,
+            }
         }}>
             {children}
         </UserContext.Provider>)

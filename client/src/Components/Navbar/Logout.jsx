@@ -4,9 +4,13 @@ import Button from '@material-ui/core/Button';
 
 const Logout = () => {
     
-    const context = useContext(UserContext);
+    const {dispatch} = useContext(UserContext);
     return (
-        <Button onClick={context.handleLogout} color='secondary' variant="contained">
+        <Button onClick={() => {
+                    dispatch({type: 'logout'})
+                    localStorage.removeItem('user')
+                }} 
+                color='secondary' variant="contained">
             Logout
         </Button>
     );

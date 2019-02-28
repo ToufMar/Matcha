@@ -1,78 +1,34 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component, Fragment, useContext, useState} from 'react';
+import {UserContext} from '../Components/Contexts/UserContext.jsx';
 
-class Index extends Component{
-    render(){
-        return(
-                <div>
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                LOL
-                </div>
-        )
-    }
+const handleClick = (connected, verified) => {
+    if (!connected){
+        return (true)
+        // window.location.reload()
+    } 
 }
 
-export default Index;
+const FalshUser = ({ connected, id}) => {
+    return(
+        <>
+        LOL
+        </>
+    )
+    
+} 
+
+const testConnected = () => {
+
+}
+
+const index = () => {
+    const {state, dispatch} = useContext(UserContext);
+    return (
+        // <p></p>
+        <FalshUser connected={state.connected} id={1}></FalshUser>
+        )
+
+    
+}
+
+export {index};

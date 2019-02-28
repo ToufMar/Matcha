@@ -3,7 +3,7 @@ import { Route, Switch, Link } from 'react-router-dom';
 import { UserProvider, UserContext } from '../Components/Contexts/UserContext.jsx';
 import { InfosProvider, InfosContext } from '../Components/Contexts/InfosContext.jsx';
 import Navbar from '../Components/Navbar/Navbar.jsx';
-import Index from '../Pages/Index.jsx';
+import {index} from '../Pages/Index.jsx';
 import Verify from '../Pages/Verify.jsx'
 
 const RouterProviders = ({ children }) => {
@@ -17,28 +17,25 @@ const RouterProviders = ({ children }) => {
 }
 
 const Router = () => {
-    const infos = useContext(InfosContext);
-    const user = useContext(UserContext);
     return (
         <RouterProviders>
             <Navbar />
             <Switch>
-                <Route exact path='/' component={Index} />
-                <Route path='/verifyEmail' render={Verify} />
-                {/* {
-                    user.connected &&
-                    <div>TA RACE LA CHIENNE</div>
-                } */}
+                <Route exact path='/' component={index} />
+                {!localStorage && 
+                    <Fragment>
+                        <Route path='/verifyEmail' render={Verify} />
+                    </Fragment>
+                }
+                {localStorage && 
+                    <Fragment>
+                        <Route exact path='/' render={index} />
+                        <Route path='/verifyEmail' render={Verify} />
+                    </Fragment>
+                }
             </Switch>
+
         </RouterProviders>
     )
 }
-// const Router = () => {
-//     const infos = useContext(InfosContext);
-//     const user = useContext(UserContext);
-//     return (
-
-//     )
-// }
-
 export default Router;

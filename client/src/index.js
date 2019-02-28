@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+// import {Router} from 'react-router-dom';
 import App from './App';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router} from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 import './root.css'
 
 ReactDOM.render((
-    <BrowserRouter basename='/'>
+    <Router basename='/'>
         <App />
-    </BrowserRouter>
+    </Router>
     ),
     document.getElementById('root'));
 
